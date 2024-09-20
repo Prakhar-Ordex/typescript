@@ -48,7 +48,7 @@ class Phone {
 class Ac {
     constructor() {
         this.color = "white";
-        this.tones = "1";       
+        this.tones = "1";
         this.company = "voltas";
         this.temp = 22;
     }

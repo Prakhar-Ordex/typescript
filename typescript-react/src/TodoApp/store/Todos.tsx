@@ -10,6 +10,7 @@ type Todo = {
   createdAt: Date;
 };
 
+
 type TodoContexts = {
   todos: Todo[];
   handleAddTodo: (task: string) => void;

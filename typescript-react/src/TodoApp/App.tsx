@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 
 const App: React.FC = () => {
   return (
-    <>
+    <div className="bg-gray-800 h-screen text-gray-500 ">
       <BrowserRouter>
         <main>
           <h1>TODO REACT + TYPESCRIPT </h1>
@@ -18,7 +18,7 @@ const App: React.FC = () => {
           </Todos>
         </main>
       </BrowserRouter>
-    </>
+    </div>
   );
 };
 
