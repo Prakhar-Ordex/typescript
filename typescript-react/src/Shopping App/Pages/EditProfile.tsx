@@ -1,34 +1,37 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { registerUser } from "../Redux/UserSlice";
-import { useAppDispatch } from "../Redux/hooks";
-import { registerData } from "../constant/constant";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../Redux/hooks";
+import { editProfile } from "../Redux/UserSlice";
+import { User } from "../constant/constant";
 
-const Register = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+const EditProfile = () => {
+  const { id } = useParams<{ id: string }>();
+  const userProfile = useAppSelector((state) => state.userData.loginUser);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate()
 
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<registerData>();
-
-  const onSubmit: SubmitHandler<registerData> = async (data) => {
+  } = useForm<User>();
+  useEffect(() => {
+    if (userProfile) reset(userProfile);
+  }, []);
+  const onSubmit: SubmitHandler<User> = async (data) => {
     try {
-      await dispatch(registerUser(data));
-      reset();
-      navigate("/login");
+      const editData: User = { ...data, id: Number(id) };
+        dispatch(editProfile(editData));
+        navigate("/profile");
     } catch (error) {
-      setError("root", { type: "manual", message: "Error registering user" });
-      console.error("Error registering user:", error);
+      console.log(error);
     }
   };
 
   return (
-    <div className="py-16">
+    <div className="mt-20">
       <div className="max-w-4xl mx-auto font-[sans-serif] p-6  bg-white rounded-lg shadow  ">
         <div className="text-center mb-16">
           <h4 className="text-gray-800 text-base font-semibold mt-6">
@@ -119,6 +122,21 @@ const Register = () => {
                 <p className="text-red-500 text-sm">{errors.avatar.message}</p>
               )}
             </div>
+            <div>
+              <label className="text-gray-800 text-sm mb-2 block">Role</label>
+              <input
+                type="text"
+                className="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all"
+                placeholder="Enter confirm password"
+                {...register("role", {
+                  required: { value: true, message: "Avatar is required" },
+                  minLength: { value: 3, message: "Min lenght 3" },
+                })}
+              />
+              {errors.role && (
+                <p className="text-red-500 text-sm">{errors.role.message}</p>
+              )}
+            </div>
           </div>
           <p className="text-sm font-light text-gray-500 ">
             Don’t have an account yet?{" "}
@@ -145,4 +163,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default EditProfile;

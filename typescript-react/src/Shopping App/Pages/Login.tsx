@@ -2,21 +2,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch } from "../Redux/hooks";
 import { loginUser } from "../Redux/UserSlice";
+import { loginData } from "../constant/constant";
 
 const Login = () => {
-    interface loginData{
-        email: string;
-        password: string;
-    }
+ 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    } = useForm<loginData>();
+  } = useForm<loginData>();
 
-  const onSubmit:SubmitHandler<loginData>= (data) => {
+  const onSubmit: SubmitHandler<loginData> = (data) => {
     try {
       dispatch(loginUser(data));
       navigate("/");
@@ -47,7 +46,6 @@ const Login = () => {
                   </label>
                   <input
                     type="text"
-                    name="email"
                     id="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
                     placeholder="name@company.com"
@@ -73,7 +71,6 @@ const Login = () => {
                   </label>
                   <input
                     type="password"
-                    name="password"
                     id="password"
                     placeholder="********"
                     {...register("password", {

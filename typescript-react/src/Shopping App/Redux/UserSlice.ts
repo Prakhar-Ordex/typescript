@@ -1,49 +1,40 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  MyKnownError,
+  registerData,
+  User,
+  UserSice,
+} from "../constant/constant";
 
-export const registerUser = createAsyncThunk(
-  "register",
-  async (newUser, { rejectWithValue }) => {
-    try {
-      const response = await fetch("https://api.escuelajs.co/api/v1/users/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create user");
-      }
-
-      const userData = await response.json();
-      return userData;
-    } catch (error:any) {
-      return rejectWithValue(error.message || "Something went wrong");
+export const registerUser = createAsyncThunk<
+  any,
+  registerData,
+  { rejectValue: MyKnownError }
+>("register", async (newUser, { rejectWithValue }) => {
+  try {
+    const response = await fetch("https://api.escuelajs.co/api/v1/users/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to create user");
     }
+
+    const userData = await response.json();
+    console.log(userData);
+    return userData;
+  } catch (error: any) {
+    return rejectWithValue(error.message || "Something went wrong");
   }
-);
-
-interface User {
-  id?: number;
-  name?: string;
-  email: string;
-  password: string;
-  avatar?: string;
-}
-interface UserSice {
-  loginUser: User | null;
-  users: User[] | null;
-}
-
-const getStoredData = <T>(key: string): T | null => {
-  const data = localStorage.getItem(key);
-  return data ? (JSON.parse(data) as T) : null;
-};
+});
 
 const initialState: UserSice = {
-  loginUser: getStoredData<User>("loginUser"),
-  users: getStoredData<User[]>("users"),
+  loginUser: JSON.parse(localStorage.getItem("loginUser") || "null"),
+  users: JSON.parse(localStorage.getItem("users") || "[]"),
 };
 
 export const userSlice = createSlice({
@@ -52,6 +43,7 @@ export const userSlice = createSlice({
   reducers: {
     loginUser: (state, action: PayloadAction<User>) => {
       const data = action.payload;
+      console.log(data);
       let findUser = state?.users?.find(
         (item) => item.email === data.email && item.password === data.password
       );
@@ -63,28 +55,40 @@ export const userSlice = createSlice({
         throw new Error("Please enter a valid email or password");
       }
     },
+    editProfile: (state, action: PayloadAction<User>) => {
+      const data = action.payload;
+      const findUserIndex: number | undefined = state?.users?.findIndex(
+        (item) => item.email === data.email
+      );
+      if (findUserIndex !== -1 && findUserIndex != undefined) {
+        state.users?.splice(findUserIndex, 1, data);
+        state.loginUser = data;
+        localStorage.setItem("users", JSON.stringify(state.users));
+        localStorage.setItem("loginUser", JSON.stringify(state.loginUser));
+      } else {
+        alert("User not found");
+        throw new Error("User not found");
+      }
+    },
     logoutUser: (state) => {
       localStorage.removeItem("loginUser");
       state.loginUser = null;
     },
   },
   extraReducers: (builder) => {
-    // builder.addCase(registerUser.pending, (state) => {
-    //   state.isLoading = true;
-    // });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       const userData = action.payload;
-
       state.users?.push(userData);
-      localStorage.setItem("user", JSON.stringify(state.users));
-    //   state.isLoading = false;
+      console.log(state.users);
+      localStorage.setItem("users", JSON.stringify(state.users));
+      //   state.isLoading = false;
     });
-    builder.addCase(registerUser.rejected, (state, action) => {
-    //   state.isLoading = false;
+    builder.addCase(registerUser.rejected, (_, action) => {
+      //   state.isLoading = false;
       alert("something went wrong " + action.payload);
     });
   },
 });
 
-export const { loginUser, logoutUser } = userSlice.actions;
+export const { loginUser, logoutUser, editProfile } = userSlice.actions;
 export default userSlice.reducer;

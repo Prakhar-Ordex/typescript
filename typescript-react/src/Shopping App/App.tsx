@@ -5,6 +5,10 @@ import { Provider } from "react-redux";
 import { store } from "./Redux/store";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
+import Cart from "./Pages/Cart";
+import ProtectRoute from "./Auth/ProtectRoute";
+import Profile from "./Pages/Profile";
+import EditProfile from "./Pages/EditProfile";
 
 const App = () => {
   return (
@@ -12,7 +16,12 @@ const App = () => {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Product />} />
+          <Route element={<ProtectRoute />}>
+            <Route path="/" element={<Product />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/edit/:id" element={<EditProfile />} />
+          </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

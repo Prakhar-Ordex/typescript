@@ -1,19 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-
-type product = {
-  id: number;
-  category: string;
-  title: string;
-  description: string;
-  image: string;
-  price: number;
-  rating: {
-    count: number;
-    rate: number;
-  };
-  quantity: number;
-};
+import { product, productState } from "../constant/constant";
 
 export const fetchProducts = createAsyncThunk(
   "fetchProducts",
@@ -30,13 +17,6 @@ export const fetchProducts = createAsyncThunk(
     }
   }
 );
-
-interface productState {
-  products: product[];
-  cart: product[];
-  total: number;
-  loading: boolean;
-}
 
 const initialState: productState = {
   products: [],
