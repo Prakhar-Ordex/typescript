@@ -25,7 +25,6 @@ export const registerUser = createAsyncThunk<
     }
 
     const userData = await response.json();
-    console.log(userData);
     return userData;
   } catch (error: any) {
     return rejectWithValue(error.message || "Something went wrong");
@@ -43,7 +42,6 @@ export const userSlice = createSlice({
   reducers: {
     loginUser: (state, action: PayloadAction<User>) => {
       const data = action.payload;
-      console.log(data);
       let findUser = state?.users?.find(
         (item) => item.email === data.email && item.password === data.password
       );
@@ -55,6 +53,7 @@ export const userSlice = createSlice({
         throw new Error("Please enter a valid email or password");
       }
     },
+
     editProfile: (state, action: PayloadAction<User>) => {
       const data = action.payload;
       const findUserIndex: number | undefined = state?.users?.findIndex(
@@ -70,25 +69,28 @@ export const userSlice = createSlice({
         throw new Error("User not found");
       }
     },
+
     logoutUser: (state) => {
       localStorage.removeItem("loginUser");
       state.loginUser = null;
     },
+    deleteUser: (state,action) => { 
+
+    }
   },
+
   extraReducers: (builder) => {
     builder.addCase(registerUser.fulfilled, (state, action) => {
       const userData = action.payload;
       state.users?.push(userData);
-      console.log(state.users);
       localStorage.setItem("users", JSON.stringify(state.users));
-      //   state.isLoading = false;
+   
     });
-    builder.addCase(registerUser.rejected, (_, action) => {
-      //   state.isLoading = false;
+    builder.addCase(registerUser.rejected, (_, action) => {    
       alert("something went wrong " + action.payload);
     });
   },
 });
 
-export const { loginUser, logoutUser, editProfile } = userSlice.actions;
+export const { loginUser, logoutUser, editProfile,deleteUser } = userSlice.actions;
 export default userSlice.reducer;

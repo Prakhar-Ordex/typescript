@@ -4,9 +4,13 @@ import { product, productState } from "../constant/constant";
 
 export const fetchProducts = createAsyncThunk(
   "fetchProducts",
-  async (_, { rejectWithValue }) => {
+  async (catagori: string | null, { rejectWithValue }) => {
     try {
-      const response = await fetch("https://fakestoreapi.com/products");
+      const api = catagori === null
+        ? "https://fakestoreapi.com/products"
+        : `https://fakestoreapi.com/products/category/${catagori}`;
+
+      const response = await fetch(api);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }

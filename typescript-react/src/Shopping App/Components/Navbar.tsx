@@ -30,7 +30,7 @@ const Navbar = () => {
 
         <button className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500">
           <span className="text-xl">
-            Cart Items Total Price = {state.total} ₹
+            Items Total Price = {state.total} $
           </span>
         </button>
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
@@ -65,7 +65,7 @@ const Navbar = () => {
             </li>
             {user.loginUser ? (
               <li
-                className="block py-5 px-3 text-white bg-orange-700 rounded  md:text-blue-700 md:p-0 dark:text-white "
+                className="bg-red-600 px-2 py-1 rounded-md text-white "
                 onClick={() => {
                   if (confirm("are you sure you want to log out?")) {
                     dispatch(logoutUser());
@@ -73,7 +73,7 @@ const Navbar = () => {
                   }
                 }}
               >
-                logout
+                logout 
               </li>
             ) : (
               <>

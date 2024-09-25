@@ -7,6 +7,7 @@ export interface User {
   createdAt?: Date;
   role?: string;
   updatedAt?: Date;
+  cart?:product[]
 }
 export interface loginData {
   email: string;

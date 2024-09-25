@@ -28,15 +28,15 @@ const Register = () => {
   };
 
   return (
-    <div className="py-16">
-      <div className="max-w-4xl mx-auto font-[sans-serif] p-6  bg-white rounded-lg shadow  ">
+    <div className="py-16 bg-gray-800 min-h-screen">
+      <div className="max-w-4xl mx-auto font-[sans-serif] p-6  bg-gray-100 rounded-lg shadow  mt-10">
         <div className="text-center mb-16">
-          <h4 className="text-gray-800 text-base font-semibold mt-6">
+          <h4 className="text-gray-800  text-2xl font-semibold ">
             Sign up into your account
           </h4>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="">
           {errors.root?.message && (
             <p className="text-red-500 text-sm">{errors.root?.message}</p>
           )}
@@ -45,7 +45,7 @@ const Register = () => {
               <label className="text-gray-800 text-sm mb-2 block"> Name</label>
               <input
                 type="text"
-                className="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all"
+                className="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all border-2"
                 placeholder="Enter name"
                 {...register("name", {
                   required: { value: true, message: "Name is required" },
@@ -63,7 +63,7 @@ const Register = () => {
               </label>
               <input
                 type="text"
-                className="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all"
+                className="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all border-2"
                 placeholder="Enter email"
                 {...register("email", {
                   required: { value: true, message: "Emial is required" },
@@ -85,7 +85,7 @@ const Register = () => {
               </label>
               <input
                 type="password"
-                className="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all"
+                className="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all border-2"
                 placeholder="Enter password"
                 {...register("password", {
                   required: { value: true, message: "passworde is required" },
@@ -108,7 +108,7 @@ const Register = () => {
               <label className="text-gray-800 text-sm mb-2 block">Avatar</label>
               <input
                 type="text"
-                className="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all"
+                className="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all border-2"
                 placeholder="Enter confirm password"
                 {...register("avatar", {
                   required: { value: true, message: "Avatar is required" },

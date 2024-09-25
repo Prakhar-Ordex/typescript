@@ -6,14 +6,14 @@ const Cart = () => {
   const state = useAppSelector((state) => state.productsData);
   const dispatch = useAppDispatch();
   return (
-    <div>
+    <div className="bg-gray-50 py-8 antialiased dark:bg-gray-900 md:py-12 min-h-screen">
       <div
-        className="container text-center mt-20 m-auto"
+        className="container text-center mt-20 m-auto "
         style={{ width: "700px" }}
       >
         {state.cart.length == 0 && (
           <>
-            <h1 className="p-2 text-5xl font-bold mb-5">Your Cart is Empty</h1>
+            <h1 className="p-2 text-5xl font-bold mb-5 text-white">Your Cart is Empty</h1>
             <Link
               to={"/"}
               className="bg-blue-500 text-2xl text-white rounded-md p-1.5 "
@@ -42,16 +42,16 @@ const Cart = () => {
                 className="h-16 w-16 flex-none  bg-gray-50"
               />
               <div className="min-w-0 flex-auto">
-                <p className="text-sm font-semibold leading-6 text-gray-900">
+                <p className="text-sm font-semibold leading-6 text-white">
                   {item.title} <span>({item.quantity})</span>
                 </p>
-                <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                <p className="mt-1 truncate text-xs leading-5 text-white">
                   {item.description}
                 </p>
               </div>
             </div>
             <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-              <strong className="text-sm leading-6 text-gray-900">
+              <strong className="text-sm leading-6 text-white">
                 {item.price} $
               </strong>
 
@@ -85,8 +85,8 @@ const Cart = () => {
         ))}
       </ul>
       {state.cart.length > 0 && (
-        <div className="container text-center m-auto">
-          <h2 className="text-xl font-bold mb-1">Total: {state.total}$ Only</h2>
+        <div className="container text-center m-auto text-white">
+          <h2 className="text-xl font-bold mb-1">Total Amount: {state.total}$ Only</h2>
           <Link
             to={"/order"}
             className="bg-blue-500 text-2xl text-white rounded-md p-1.5 "
