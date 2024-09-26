@@ -1,6 +1,3 @@
-// let b = 10;
-var value = {
-    name: "Earth",
-    population: 7979593000,
-    cities: 63
-};
+let username = null;
+username ?= "Shahar"; 
+console.log(username); 

@@ -60,7 +60,7 @@ const Profile = () => {
                 Edit Profile
               </Link>
               <button
-              onClick={()=>dispatch(deleteUser(user.loginUser))}  className="py-3.5 px-5 rounded-full bg-indigo-50 text-indigo-600 font-semibold text-base leading-7 shadow-sm shadow-transparent transition-all duration-500 hover:bg-indigo-100">
+              onClick={()=>dispatch(deleteUser(user.loginUser))}  className="py-3.5 px-5 rounded-full bg-red-700 text-white font-semibold text-base leading-7 shadow-sm shadow-transparent transition-all duration-500 hover:bg-indigo-100">
                 delete
               </button>
             </div>

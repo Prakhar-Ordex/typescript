@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { product, productState } from "../constant/constant";
+import { RootState } from "./store";
 
 export const fetchProducts = createAsyncThunk(
   "fetchProducts",
@@ -22,22 +23,22 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+const calculateTotal = (cart: product[]) => {
+  const total = cart
+  .reduce((acc, product) => {
+    return acc + product.price * product.quantity;
+  }, 0)
+  .toFixed(2);
+  return parseFloat(total);
+};
+
+
 const initialState: productState = {
   products: [],
   cart: [],
   total: 0,
   loading: false,
 };
-
-const calculateTotal = (cart: product[]) => {
-  const total = cart
-    .reduce((acc, product) => {
-      return acc + product.price * product.quantity;
-    }, 0)
-    .toFixed(2);
-  return parseFloat(total);
-};
-
 export const productSlice = createSlice({
   name: "productSlice",
   initialState,
@@ -102,4 +103,6 @@ export const {
   incrementQuantity,
   removeFromCart,
 } = productSlice.actions;
+
+export const getCart = (state:RootState) => state.productsData.cart;
 export default productSlice.reducer;

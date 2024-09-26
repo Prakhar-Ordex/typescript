@@ -5,6 +5,7 @@ import {
   User,
   UserSice,
 } from "../constant/constant";
+import { getCart } from "./ProductSlice";
 
 export const registerUser = createAsyncThunk<
   any,
@@ -74,9 +75,24 @@ export const userSlice = createSlice({
       localStorage.removeItem("loginUser");
       state.loginUser = null;
     },
-    deleteUser: (state,action) => { 
-
+    deleteUser: (state, action: PayloadAction<User | null>) => {
+      const user = action.payload;
+      const findIndex: number | undefined = state.users?.findIndex(
+        (item) => item.id === user?.id
+      );
+      if (findIndex !== -1 && findIndex != undefined) {
+        state.loginUser = null;
+        state.users?.splice(findIndex, 1);
+        localStorage.setItem("users", JSON.stringify(state.users));
+        localStorage.removeItem("loginUser");
+        alert("User deleted successfully");
+      }
+    },
+    addCart: (state, action) => {
+      const cartData = getCart(action.payload.state); 
+      console.log("User Info:", cartData);
     }
+   
   },
 
   extraReducers: (builder) => {
@@ -84,13 +100,13 @@ export const userSlice = createSlice({
       const userData = action.payload;
       state.users?.push(userData);
       localStorage.setItem("users", JSON.stringify(state.users));
-   
     });
-    builder.addCase(registerUser.rejected, (_, action) => {    
+    builder.addCase(registerUser.rejected, (_, action) => {
       alert("something went wrong " + action.payload);
     });
   },
 });
 
-export const { loginUser, logoutUser, editProfile,deleteUser } = userSlice.actions;
+export const { loginUser, logoutUser, editProfile, deleteUser,addCart } =
+  userSlice.actions;
 export default userSlice.reducer;
