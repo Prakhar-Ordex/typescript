@@ -1,10 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../Redux/hooks";
 import { deleteUser } from "../Redux/UserSlice";
+import { clearCart } from "../Redux/ProductSlice";
 
 const Profile = () => {
   const user = useAppSelector((state) => state.userData);
   const dispatch = useAppDispatch()
+  const navigate = useNavigate();
+
   return (
     <div className="mt-20   ">
       <section className="relative pt-40 pb-24 bg-gray-900">
@@ -60,7 +63,11 @@ const Profile = () => {
                 Edit Profile
               </Link>
               <button
-              onClick={()=>dispatch(deleteUser(user.loginUser))}  className="py-3.5 px-5 rounded-full bg-red-700 text-white font-semibold text-base leading-7 shadow-sm shadow-transparent transition-all duration-500 hover:bg-indigo-100">
+                onClick={() => {
+                  dispatch(deleteUser(user.loginUser));
+                  dispatch(clearCart());
+                  navigate("/register")
+              }}  className="py-3.5 px-5 rounded-full bg-red-700 text-white font-semibold text-base leading-7 shadow-sm shadow-transparent transition-all duration-500 hover:bg-indigo-100">
                 delete
               </button>
             </div>

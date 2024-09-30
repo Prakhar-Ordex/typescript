@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../Redux/hooks";
 import {
   addToCart,
   decrementQuantity,
+  fetchCart,
   fetchProducts,
   incrementQuantity,
 } from "../Redux/ProductSlice";
@@ -14,6 +15,7 @@ const Product = () => {
   const state = useAppSelector((state) => state.productsData);
   useEffect(() => {
     dispatch(fetchProducts(null));
+    dispatch(fetchCart())
   }, []);
   return (
     <div className="mt-20">
@@ -27,10 +29,9 @@ const Product = () => {
             </div>
             <div className="flex items-center space-x-4">
               <select
-                onChange={(e) =>
-                  e.target.value
-                    ? dispatch(fetchProducts(e.target.value))
-                    : dispatch(fetchProducts(null))
+                onChange={(e) => dispatch(fetchProducts(e.target.value || null))
+      
+            
                 }
                 data-modal-toggle="filterModal"
                 data-modal-target="filterModal"

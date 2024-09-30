@@ -22,7 +22,7 @@ const Register = () => {
       reset();
       navigate("/login");
     } catch (error) {
-      setError("root", { type: "manual", message: "Error registering user" });
+      setError("root", { type: "manual", message:`  Error registering use : ${error}` });
       console.error("Error registering user:", error);
     }
   };

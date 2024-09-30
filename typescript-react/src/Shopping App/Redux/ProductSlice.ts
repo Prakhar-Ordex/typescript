@@ -7,9 +7,10 @@ export const fetchProducts = createAsyncThunk(
   "fetchProducts",
   async (catagori: string | null, { rejectWithValue }) => {
     try {
-      const api = catagori === null
-        ? "https://fakestoreapi.com/products"
-        : `https://fakestoreapi.com/products/category/${catagori}`;
+      const api =
+        catagori === null
+          ? "https://fakestoreapi.com/products"
+          : `https://fakestoreapi.com/products/category/${catagori}`;
 
       const response = await fetch(api);
       if (!response.ok) {
@@ -25,17 +26,16 @@ export const fetchProducts = createAsyncThunk(
 
 const calculateTotal = (cart: product[]) => {
   const total = cart
-  .reduce((acc, product) => {
-    return acc + product.price * product.quantity;
-  }, 0)
-  .toFixed(2);
+    .reduce((acc, product) => {
+      return acc + product.price * product.quantity;
+    }, 0)
+    .toFixed(2);
   return parseFloat(total);
 };
 
-
 const initialState: productState = {
   products: [],
-  cart: [],
+  cart: JSON.parse(localStorage.getItem("loginUser") || "null")?.cart || [],
   total: 0,
   loading: false,
 };
@@ -80,6 +80,10 @@ export const productSlice = createSlice({
       state.cart = [];
       state.total = 0;
     },
+    fetchCart: (state) => {
+      state.cart = JSON.parse(localStorage.getItem("loginUser") || "null")?.cart || [];
+      state.total = calculateTotal(state.cart);
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProducts.pending, (state) => {
@@ -102,7 +106,8 @@ export const {
   decrementQuantity,
   incrementQuantity,
   removeFromCart,
+  fetchCart
 } = productSlice.actions;
 
-export const getCart = (state:RootState) => state.productsData.cart;
+export const getCart = (state: RootState) => state.productsData.cart;
 export default productSlice.reducer;

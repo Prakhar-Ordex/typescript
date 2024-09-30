@@ -6,6 +6,7 @@ import {
   UserSice,
 } from "../constant/constant";
 import { getCart } from "./ProductSlice";
+import { toast } from "react-toastify";
 
 export const registerUser = createAsyncThunk<
   any,
@@ -22,6 +23,7 @@ export const registerUser = createAsyncThunk<
     });
     if (!response.ok) {
       const errorData = await response.json();
+      toast.warning(errorData.message)
       throw new Error(errorData.message || "Failed to create user");
     }
 
@@ -50,7 +52,7 @@ export const userSlice = createSlice({
         state.loginUser = findUser;
         localStorage.setItem("loginUser", JSON.stringify(findUser));
       } else {
-        alert("Email or Password incorrect");
+        toast.error("Email or password incorrect")
         throw new Error("Please enter a valid email or password");
       }
     },
@@ -66,7 +68,7 @@ export const userSlice = createSlice({
         localStorage.setItem("users", JSON.stringify(state.users));
         localStorage.setItem("loginUser", JSON.stringify(state.loginUser));
       } else {
-        alert("User not found");
+        toast.error("User not found");
         throw new Error("User not found");
       }
     },
@@ -85,14 +87,23 @@ export const userSlice = createSlice({
         state.users?.splice(findIndex, 1);
         localStorage.setItem("users", JSON.stringify(state.users));
         localStorage.removeItem("loginUser");
-        alert("User deleted successfully");
+        toast.success("User deleted successfully");
       }
     },
     addCart: (state, action) => {
-      const cartData = getCart(action.payload.state); 
-      console.log("User Info:", cartData);
-    }
-   
+      const cartData = getCart(action.payload.state);
+      if (state.loginUser) {
+        const findUser = state.users?.find(
+          (item) => item.id === state.loginUser?.id
+        );
+        if (findUser) {
+          findUser.cart = cartData;
+          state.loginUser.cart = cartData;
+          localStorage.setItem("users", JSON.stringify(state.users));
+          localStorage.setItem("loginUser", JSON.stringify(state.loginUser));
+        }
+      }
+    },
   },
 
   extraReducers: (builder) => {
@@ -102,11 +113,12 @@ export const userSlice = createSlice({
       localStorage.setItem("users", JSON.stringify(state.users));
     });
     builder.addCase(registerUser.rejected, (_, action) => {
-      alert("something went wrong " + action.payload);
+      toast.warning("something went wrong " + action.payload);
+      throw new Error("something went wrong");
     });
   },
 });
 
-export const { loginUser, logoutUser, editProfile, deleteUser,addCart } =
+export const { loginUser, logoutUser, editProfile, deleteUser, addCart } =
   userSlice.actions;
 export default userSlice.reducer;

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../Redux/hooks";
 import { clearCart, decrementQuantity, incrementQuantity, removeFromCart } from "../Redux/ProductSlice";
+import { addCart } from "../Redux/UserSlice";
+import { store } from "../Redux/store";
 
 const Cart = () => {
   const state = useAppSelector((state) => state.productsData);
@@ -25,7 +27,10 @@ const Cart = () => {
 
         {state.cart.length != 0 && (
           <button
-            onClick={() => dispatch(clearCart())}
+            onClick={() => {
+              dispatch(clearCart());
+              dispatch(addCart({ state: store.getState()}));
+            }}
             className="bg-red-500 text-2xl rounded-md p-1 text-white"
           >
             Clear Cart
@@ -58,7 +63,10 @@ const Cart = () => {
               <div className="mt-1 flex items-center gap-x-1.5 p-1">
                 <button
                   className="bg-red-500 text-white rounded-md p-0.5 px-2"
-                  onClick={() => dispatch(decrementQuantity(item))}
+                  onClick={() => {
+                    dispatch(decrementQuantity(item));
+                    dispatch(addCart({ state: store.getState()}));}
+                  }
                 >
                   -
                 </button>
@@ -67,7 +75,10 @@ const Cart = () => {
                 </div>
                 <button
                   className="bg-red-500 text-white rounded-md p-0.5 px-2"
-                  onClick={() => dispatch(incrementQuantity(item))}
+                  onClick={() => {
+                    dispatch(incrementQuantity(item));
+                    dispatch(addCart({ state: store.getState()}));
+                  }}
                 >
                   +
                 </button>
@@ -75,7 +86,10 @@ const Cart = () => {
               <div className="mt-1 flex items-center gap-x-1.5 p-1">
                 <button
                   className="bg-red-500 text-white rounded-md p-0.5 px-2"
-                  onClick={() => dispatch(removeFromCart(item))}
+                  onClick={() => {
+                    dispatch(removeFromCart(item))
+                    dispatch(addCart({ state: store.getState()}));
+                  }}
                 >
                   ❌
                 </button>

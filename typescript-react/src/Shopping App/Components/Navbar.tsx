@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../Redux/hooks";
 import { logoutUser } from "../Redux/UserSlice";
+import { clearCart } from "../Redux/ProductSlice";
 
 const Navbar = () => {
   const state = useAppSelector((state) => state.productsData);
   const user = useAppSelector((state) => state.userData);
+  const navigate = useNavigate()
   const dispatch = useAppDispatch();
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-700 fixed top-0 left-0 right-0 z-10 w-full  ">
@@ -66,6 +68,8 @@ const Navbar = () => {
                 onClick={() => {
                   if (confirm("are you sure you want to log out?")) {
                     dispatch(logoutUser());
+                    dispatch(clearCart())
+                    navigate("/login")
                   }
                 }}
               >
